@@ -23,7 +23,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Prijavite se na sistem</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="../1.PHP-domaci/login.php">Prijava</a>
+                        <a class="dropdown-item" href="../login.php">Prijava</a>
                         <a class="dropdown-item" href="../1.PHP-domaci/register.php">Registracija</a>
                     </div>
                 </li>
@@ -42,7 +42,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="completeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="completeModal" tabindex="-1" role = "dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,12 +90,19 @@
   </div>
 </div>
 
+<div class="container m-5">
+<button type="button" class="btn btn-primary my-4" data-bs-toggle="modal" data-bs-target="#completeModal">
+  Dodajte novi auto
+</button>
+<div id="displayDataTable"></div>
+</div>
+
 <!--Update Modal-->
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Dodavanje novog automobila</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Izmena podataka o automobilu </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -132,7 +139,7 @@
       </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick ="UpdateAutomobil()">Izmeni auto</button>
+        <button type="button" class="btn btn-success" onClick="UpdateAutomobil()">Izmeni auto</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
         <input type="hidden" id="hiddendata">
       </div>
@@ -142,12 +149,7 @@
 
 
 
-<div class="container m-5">
-<button type="button" class="btn btn-primary my-4" data-bs-toggle="modal" data-bs-target="#completeModal">
-  Izmenite auto
-</button>
-<div id="displayDataTable"></div>
-</div>
+
 
 
 
@@ -202,6 +204,8 @@
           //funckija za pokazivanje podataka
           // console.log(status); 
 
+          $('#completeModal').modal('hide');  //Nakon unosa će se zatvoriti forma
+
           displayData();
         }
       });
@@ -223,22 +227,46 @@
         });
     }
 
-    //Update
+    //Get value from Database
 
-    function UpdateAutomobil(updateId){
+    function GetDetails(updateId){
 
       $('#hiddendata').val(updateId);
       
-      $.post("update.php", {updateId:updateId}, function(data, status){
+      $.post("update.php",               //Uzimamo iz baze sve što je za taj objekat uneto, ne radimo ajax ovde
+            {updateId: updateId}, 
+            function(data, status){   
         
-        var userId = JSON.parse(data); //Pošto je nečitljiv, JSON to pročita i da nam ga kao normal id
-        $('#updateName').val(userId.naziv);
-        $('#updateName2').val(userId.marka);
-        $('#updateProdavac').val(userId.prodavac);
-        $('#updateCena').val(userId.cena);
+        var autoId = JSON.parse(data); //Pošto je nečitljiv, JSON to pročita i da nam ga kao normal id
+        $('#updateName').val(autoId.naziv);
+        $('#updateName2').val(autoId.marka);
+        $('#updateProdavac').val(autoId.prodavac);
+        $('#updateCena').val(autoId.cena);
       });
 
-      $('#updateModal').modal("show");
+      $('#updateModal').modal("show");  //modal("show") je bootstrap koji ce pokazati ovaj modal
+    }
+    
+    //Update
+    function UpdateAutomobil(){
+      var updateName = $('#updateName').val();
+      var updateName2 = $('#updateName2').val();
+      var updateProdavac = $('#updateProdavac').val();
+      var updateCena = $('#updateCena').val();
+      var hiddendata = $('#hiddendata').val(); //Ovde čuvamo id, koji nam nije bitan da ga prikažemo zato je hidden
+
+      $.post("update.php", {
+        updateName:updateName,
+        updateName2:updateName2,
+        updateProdavac:updateProdavac,
+        updateCena:updateCena,
+        hiddendata:hiddendata
+
+      }, function(data,status){
+        $('#updateModal').modal('hide'); //Kada izmenimo podatke, gasi se modal za popunjavanje
+        displayData();
+
+      });
     }
 
 

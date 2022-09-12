@@ -37,9 +37,12 @@ if(isset($_POST['displaySend'])){ //Proveravamo POST zahtev za slanje za svaki
                         <h5 class="card-title">'.$naziv.'</h5>
                         <p class="card-text">Marka: '.$marka.'</p>
                         <p class="card-text">Prodavac: '.$prodavac.'</p>
-                        <p class="card-text">Cena: '.$cena.'</p>
+                        <hr class="mt-0 mb-2">
+                        <h6 class="mb-0"> Cena: <span class="font-highlight">'.$cena.' € </span>
+                        </h6>
+                        <br>
                         <td>
-                            <button class="btn btn-info" onClick = "UpdateAutomobil('.$id.')>Izmeni</button>
+                            <button class="btn btn-info" onClick = "GetDetails('.$id.')">Izmeni</button>
                             <button class="btn btn-danger" onClick = "DeleteAutomobil('.$id.')">Obriši</button>
                         </td>
                     </div>
