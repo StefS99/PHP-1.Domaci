@@ -8,7 +8,7 @@ $(document).ready(function(){  //Ako je naš dokument spreman, prikaži sve
 function displayData(){
     var displayData="true";
     $.ajax({
-        url:"CRUD/display.php",
+        url:"handler/display.php",
         type: 'post',
         data:{
         displaySend: displayData
@@ -29,7 +29,7 @@ function addAutomobil(){
     var cenaAdd = $('#completeCena').val(); 
 
     $.ajax({
-        url:"CRUD/insert.php", //Gde želimo da pošaljemo podatke
+        url:"handler/insert.php", //Gde želimo da pošaljemo podatke
         type: 'post',  //Koji je tip//Post metod
         data:{                  //Podaci koje dodajemo promenljivima slanja
         nameSend: nameAdd,
@@ -52,7 +52,7 @@ function addAutomobil(){
 
 function DeleteAutomobil(deleteId){  //Lokalni parametar koji hvata iz id
     $.ajax({
-    url:"CRUD/delete.php",
+    url:"handler/delete.php",
     type:'post',
     data:{
         deleteSend: deleteId
@@ -70,7 +70,7 @@ function GetDetails(updateId){
 
     $('#hiddendata').val(updateId);
 
-    $.post("CRUD/update.php",               //Uzimamo iz baze sve što je za taj objekat uneto, ne radimo ajax ovde
+    $.post("handler/update.php",               //Uzimamo iz baze sve što je za taj objekat uneto, ne radimo ajax ovde
             {updateId: updateId}, 
             function(data, status){   
         
@@ -92,7 +92,7 @@ function UpdateAutomobil(){
     var updateCena = $('#updateCena').val();
     var hiddendata = $('#hiddendata').val(); //Ovde čuvamo id, koji nam nije bitan da ga prikažemo zato je hidden
 
-    $.post("CRUD/update.php", {
+    $.post("handler/update.php", {
         updateName:updateName,
         updateName2:updateName2,
         updateProdavac:updateProdavac,
