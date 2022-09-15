@@ -1,12 +1,30 @@
 //Read
 
+$(document).ready(function(){
+
+    $("#search_text").keyup(function(){
+        var search = $(this).val();
+        $.ajax({
+            url: 'search.php',
+            method: 'post',
+            data: {
+                query: search
+            },
+            success: function(response){
+                $('#displayDataTable').html(response);
+            }
+        })
+    });
+
+});
+
 $(document).ready(function(){  //Ako je naš dokument spreman, prikaži sve 
-    displayData();   //Funckija koju smo dole definisali
+    displayData(true);
 });
     
 
-function displayData(){
-    var displayData="true";
+function displayData(displayValue){
+    var displayData=displayValue; //"true" - prikazaće
     $.ajax({
         url:"handler/display.php",
         type: 'post',
@@ -43,7 +61,7 @@ function addAutomobil(){
 
         $('#completeModal').modal('hide');  //Nakon unosa će se zatvoriti forma
 
-        displayData();
+            displayData(true);
         }
     });
 }
@@ -58,7 +76,7 @@ function DeleteAutomobil(deleteId){  //Lokalni parametar koji hvata iz id
         deleteSend: deleteId
     },
     success: function(data,status){
-        displayData();                //Želimo da nakon brisanja ostanemo na stranici sa prikazanim ostalim, nakon brisanja
+       displayData(true);                //Želimo da nakon brisanja ostanemo na stranici sa prikazanim ostalim, nakon brisanja
     }
 
     });
@@ -101,7 +119,8 @@ function UpdateAutomobil(){
 
     }, function(data,status){
         $('#updateModal').modal('hide'); //Kada izmenimo podatke, gasi se modal za popunjavanje
-        displayData();
+        displayData(true);
 
     });
 }
+
