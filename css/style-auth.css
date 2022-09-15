@@ -22,18 +22,29 @@
 .container .content h3{
     font-size: 30px;
     color: #333;
-
 }
 
-.container .contet h3 span{
-    background: crimson
+.container .content h3 span{
+    background: crimson;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0 15px;
 }
 
-.container .contet p{
+.container .content h1{
+    font-size: 50px;
+    color: #333;
+}
+
+.container .content h1 span{
+    color: crimson;
+}
+
+.container .content p{
     font-size: 25px;
     margin-top: 20px;
 }
-.container .contet .btn{
+.container .content .btn{
     display: inline-block;
     padding:10px 30px;
     font-size: 20px;
@@ -43,7 +54,7 @@
     text-transform: capitalize;
 }
 
-.container .contet .btn:hover{
+.container .content .btn:hover{
     background: green;
 }
 
@@ -70,7 +81,7 @@
     font-size: 30px;
     text-transform: uppercase;
     margin-top: 10px;
-    color: #333;
+    color: crimson;
 }
 
 .form-container form input,
@@ -114,4 +125,30 @@
     border-radius: 5px;
     font-size: 20px;
     padding: 10px;
+}
+
+#SLIDE_BG{
+    width: 100%;
+    height: 100vh;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    backface-visibility: hidden;
+    animation-name: slideBg;
+    animation: slideBg 8s linear infinite 0s;
+    animation-timing-function: ease-in-out;
+    background-image: url('../img/1.jpg');
+}
+
+@keyframes slideBg{
+    0% {
+        background-image: url('../img/1.jpg');
+    }
+    50%{
+        background-image: url('../img/2.jpg');
+    }
+    100% {
+        background-image: url('../img/3.jpg');
+    }
+    
 }
