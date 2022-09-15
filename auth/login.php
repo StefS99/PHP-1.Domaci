@@ -1,5 +1,6 @@
 <?php 
     require "../connect.php";
+    require "../model/user.php";
 
     session_start();
 
@@ -8,26 +9,30 @@
         $email = mysqli_real_escape_string($connection, $_POST['email']);
 
         $password = md5($_POST['password']);
-        $cpassword = md5($_POST['cpassword']);
+        #$cpassword = md5($_POST['cpassword']);
 
         $user_type = $_POST['user_type'];
 
-        $select = "SELECT * FROM user_form WHERE email='$email' && password='$password'";
-        
-        $result = mysqli_query($connection, $select);
+       // $select = "SELECT * FROM user_form WHERE email='$email' && password='$password'";
+
+        $korisnik = new User(1,$name, $email, $password, $user_type);
+        // $result = mysqli_query($connection, $select);
+
+        $result = User::logIn($korisnik, $connection);
+
 
         if(mysqli_num_rows($result)>0){               //Ispisaće komentar kao alertify 
             $row = mysqli_fetch_array($result);
 
             if($row['user_type']=='admin'){
 
-                $_SESSION['admin_name'] = $row['name'];
-                header('location:../index.php');
+                $_SESSION['user_name'] = $row['name'];
+                header('location:../home.php');
 
             }elseif($row['user_type']=='user'){
 
                 $_SESSION['user_name'] = $row['name'];
-                header('location:../index.php');
+                header('location:../home.php');
             }
         }else{
             $error[] = 'Uneli ste pogrešan mail ili lozinku';
